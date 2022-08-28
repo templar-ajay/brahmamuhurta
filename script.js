@@ -1,6 +1,8 @@
-
+const timeDisplayEl = document.querySelector('#muhurat-display')
+const error = document.querySelector('#error')
 if (navigator.geolocation) { // device can return its location
-    navigator.geolocation.getCurrentPosition(function (position) {
+    navigator.geolocation.getCurrentPosition((position) => {
+        error.style.display = "none";
         const url = `https://api.sunrise-sunset.org/json?lat=${position.coords.latitude}&lng=${position.coords.longitude}&formatted=0`
 
         fetch(url).then(res => res.json()).then(data => data.results.sunrise).then(sunriseInUTC => {
@@ -24,7 +26,7 @@ if (navigator.geolocation) { // device can return its location
                 },
                 ends: function () {
                     const date = new Date(nextSunRise)
-                    date.setMinutes(date.getHours() - 48)
+                    date.setMinutes(date.getMinutes() - 48)
                     return date
                 },
                 readable: function (time) {
@@ -41,8 +43,10 @@ if (navigator.geolocation) { // device can return its location
             console.log(`BrahmaMuhurtha`), console.log(BrahmaMuhurtha.begins().toLocaleTimeString(), BrahmaMuhurtha.ends());
             timeDisplayEl.innerHTML = `${readableFormat(BrahmaMuhurtha.begins().toLocaleTimeString())} AM to ${readableFormat(BrahmaMuhurtha.ends().toLocaleTimeString())} AM`
         }))
+    }, () => {
+        alert('BrahmaMuhurtha depends on sunrise time and location, provide location access to get timings relevant for you')
+        timeDisplayEl.innerHTML = ` <small>BrahmaMuhurtha begins 1 hour and 36 minutes before sunrise, and ends 48 minutes before sunrise.</small>`
+        error.style.display = "block"
 
-        const timeDisplayEl = document.querySelector('#muhurat-display')
-
-    });
+    })
 }
