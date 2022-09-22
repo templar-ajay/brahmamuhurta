@@ -7,15 +7,11 @@ if (navigator.geolocation) { // device can return its location
 
         fetch(url).then(res => res.json()).then(data => data.results.sunrise).then(sunriseInUTC => {
             const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-            const sunrise = new Date(sunriseInUTC).toLocaleString("en-US", { timeZone: timeZone })
-            return sunrise;
+            return new Date(sunriseInUTC).toLocaleString("en-US", { timeZone: timeZone })
         }
         ).then(sunriseInLocalTimeZone => {
             const date = new Date(sunriseInLocalTimeZone)
-            if (date < new Date()) {
-                date.setDate(date.getDate() + 1)
-            }
-            return date;
+            return (date < new Date())?date.setDate(date.getDate()+1):date
         }
         ).then(nextSunRise => {
             const BrahmaMuhurtha = {
