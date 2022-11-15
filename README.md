@@ -1,3 +1,5 @@
+app link - https://templar-command0.github.io/brahmamuhurta/
+
 # Want to create yourself the way you want, then you look for every opportunity that can help in that direction
 
 ## Time is one of them
